@@ -1,44 +1,41 @@
-'use client'
-import React, { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
-import StoreContext from "../Context/AuthContext";
+"use client";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useStateContext } from "../Context/AuthContext";
 
 interface Task {
-    title : string
-    id : number
+  title: string;
+  id: number;
 }
 const Header = () => {
+  const { value, setValue } = useStateContext();
 
-    const {value, setValue} = useContext(StoreContext)
+  const [task, setTask] = useState<Task>({ title: "", id: 0 });
 
-    const [task, setTask] = useState<Task>({title : '' , id : 0});
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTask({ ...task, [e.target.name]: e.target.value });
+  };
 
-    const handleOnChange = (e : ChangeEvent<HTMLInputElement>) => {
-        setTask({ ...task, [e.target.name] : e.target.value})
-    }
-
- 
   useEffect(() => {
-    const savedTasks =  localStorage.getItem("myTasks");
-    if(savedTasks){
+    const savedTasks = localStorage.getItem("myTasks");
+    if (savedTasks) {
       setValue(JSON.parse(savedTasks));
     }
-  }, [])
+  }, []);
 
   // 🔹 Save tasks to local storage whenever tasks change
   useEffect(() => {
-    localStorage.setItem("myTasks", JSON.stringify(value))
-  }, [value])
+    localStorage.setItem("myTasks", JSON.stringify(value));
+  }, [value]);
 
-  
-    const onSubmit = (e : FormEvent) => {
-        e.preventDefault()
-        const newTask : Task = {
-            title : task.title,
-            id : Date.now()
-        }
-        setValue(value.concat(newTask))
-        setTask({title : '', id : 0})
-    }
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const newTask: Task = {
+      title: task.title,
+      id: Date.now(),
+    };
+    setValue(value.concat(newTask));
+    setTask({ title: "", id: 0 });
+  };
   return (
     <div className="flex flex-col items-center text-gray-800">
       <div className="flex items-center justify-center mt-12">

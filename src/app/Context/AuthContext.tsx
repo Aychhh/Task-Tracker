@@ -4,6 +4,7 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useContext,
   useState,
 } from "react";
 
@@ -89,3 +90,13 @@ export const StoreProvider = ({ children }: StoreProviderType) => {
 };
 
 export default StoreContext;
+
+export const useStateContext = () => {
+  const context = useContext(StoreContext);
+  if (!context) {
+    throw new Error(
+      "useStateContext must be used within a StateContextProvider",
+    );
+  }
+  return context;
+};

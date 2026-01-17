@@ -1,10 +1,9 @@
 "use client";
-import React, { ChangeEvent, FormEvent, useContext } from "react";
-import StoreContext from "../Context/AuthContext";
+import React, { ChangeEvent, FormEvent } from "react";
+import { useStateContext } from "../Context/AuthContext";
 
 const EditTask = () => {
-  const { seteTask, eTask, handleSave, setisEdit, isEdit } =
-    useContext(StoreContext);
+  const { seteTask, eTask, handleSave, setisEdit, isEdit } = useStateContext();
 
   const handleOnEdit = (e: ChangeEvent<HTMLInputElement>) => {
     seteTask({ ...eTask, [e.target.name]: e.target.value });
